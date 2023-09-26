@@ -1,0 +1,38 @@
+class Solution {
+public:
+    string removeDuplicateLetters(string s) {
+        unordered_map<char, int> lastOccurrence; 
+        // To store the last occurrence index of each character
+
+        unordered_set<char> inResult; 
+        // To track characters in the result
+        
+        string result = ""; 
+        // To store the result
+        
+        // Populate the last occurrence index for each character
+        
+        for (int i = 0; i < s.length(); i++) {
+            lastOccurrence[s[i]] = i;
+        }
+        
+        for (int i = 0; i < s.length(); i++) {
+            char c = s[i];
+            
+        // If the character is not in the result yet and it's lexicographically smaller than the last character in result
+        // and there is still an occurrence of the last character after this position, remove the last character from result
+            while (!result.empty() && c < result.back() && i < lastOccurrence[result.back()]) {
+                inResult.erase(result.back());
+                result.pop_back();
+            }
+            
+            // If the character is not in the result, add it to the result and mark it as in result
+            if (inResult.find(c) == inResult.end()) {
+                result.push_back(c);
+                inResult.insert(c);
+            }
+        }
+        
+        return result;
+    }
+};
